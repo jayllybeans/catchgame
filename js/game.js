@@ -19,6 +19,8 @@ context = canvas.getContext("2d");
 
 player = new GameObject(canvas.width/2, canvas.height - 50, 50, 50, "#ffff00");
 
+var scoreCount = 0;
+
 var amt = 5;
 var items = [];
 var hazards = [];
@@ -86,7 +88,11 @@ function animate()
 		{
 			if(player.hitTestObject(items[i]))
 			{
-				setInterval(colorSet("#00ff00"), 500);
+				colorSet("#00ff00");
+				scoreCount++;
+				setTimeout(function() {
+        		colorSet("#ffff00");
+    			}, 500);
 			}
 			items[i].y = -1 * (Math.random() * 1000);
 			items[i].x = Math.random() * canvas.width;
@@ -97,7 +103,11 @@ function animate()
 		{
 			if(player.hitTestObject(hazards[i]))
 			{
-				setInterval(colorSet("#ff0000"), 500);
+				colorSet("#ff0000");
+				scoreCount = 0;
+				setTimeout(function() {
+        		colorSet("#ffff00");
+    			}, 500);
 			}
 			hazards[i].y = -1 * (Math.random() * 1000);
 			hazards[i].x = Math.random() * canvas.width;
@@ -105,6 +115,11 @@ function animate()
         hazards[i].y += gravity;
         hazards[i].drawCircle();
     }
+
+	context.font = "30px Arial black";
+	context.weight = "bold";
+	context.fillStyle = "black";
+	context.fillText("Score: " + scoreCount, 20, 40);
 }
 
 function colorSet(color)

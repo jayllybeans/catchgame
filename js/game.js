@@ -29,6 +29,7 @@ for (i = 0; i < amt; i++)
 	items[i].x = Math.random() * canvas.width;
 	items[i].y = -1 * (Math.random() * 1000);
 	items[i].width = 20;
+	items[i].height = 20;
 	items[i].color = "#00ff00";
 }
 
@@ -37,7 +38,6 @@ for (i = 0; i < amt; i++)
     hazards[i] = new GameObject();
 	hazards[i].x = Math.random() * canvas.width;
 	hazards[i].y = -1 * (Math.random() * 1000);
-	hazards[i].height = 20;
     hazards[i].width = 20;
 	hazards[i].color = "#ff0000";
 }
@@ -82,9 +82,32 @@ function animate()
     player.drawRect();
     for (i = 0; i < amt; i++)
     {
-        items[i].y += gravity;
-        items[i].drawCircle();
+        if (items[i].y >= canvas.height + items[i].width/2 || player.hitTestObject(items[i]))
+		{
+			if(player.hitTestObject(items[i]))
+			{
+				setInterval(colorSet("#00ff00"), 500);
+			}
+			items[i].y = -1 * (Math.random() * 1000);
+			items[i].x = Math.random() * canvas.width;
+		}
+		items[i].y += gravity;
+        items[i].drawRect();
+		if (hazards[i].y >= canvas.height + hazards[i].width/2 || player.hitTestObject(hazards[i]))
+		{
+			if(player.hitTestObject(hazards[i]))
+			{
+				setInterval(colorSet("#ff0000"), 500);
+			}
+			hazards[i].y = -1 * (Math.random() * 1000);
+			hazards[i].x = Math.random() * canvas.width;
+		}
         hazards[i].y += gravity;
-        hazards[i].drawRect();
+        hazards[i].drawCircle();
     }
+}
+
+function colorSet(color)
+{
+	player.color = color;
 }
